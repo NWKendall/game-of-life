@@ -1,5 +1,7 @@
 import React, { useState, useRef, useCallback } from "react";
 import produce from "immer";
+import GlobalStateProvider from './stores/GlobalState';
+import GolForm from './form/golForm';
 
 const numRows = 25;
 const numCols = 25;
@@ -31,18 +33,6 @@ const randomCanvas = () => {
 };
 
 const App: React.FC = () => {
-  let [dimensions, setDimensions] = useState({
-    numRows: 25,
-    numCols: 25,
-  });
-
-  // const submitGrid = (e: any) => {
-  //   e.preventDefault();
-  //   setDimensions({
-  //     value: [e.target.value],
-  //   });
-  // };
-
   const [grid, setGrid] = useState(() => {
     return blankCanvas();
   });
@@ -52,6 +42,7 @@ const App: React.FC = () => {
 
   const runningRef = useRef(running);
   runningRef.current = running;
+
   const start = useCallback(() => {
     if (!runningRef.current) {
       return;
@@ -84,83 +75,66 @@ const App: React.FC = () => {
 
   return (
     <>
-      <p>Generation: {generation}</p>
-      <form>
-        <label>Rows:</label>
-        <input
-          type="number"
-          name="rows"
-          placeholder="Min = 25, Max = 100"
-        />
-        <label>Columns:</label>
-        <input
-          type="number"
-          name="columns"
-          placeholder="Min = 25, Max = 100"
-        />
-        <label>Speed:</label>
-        <input
-          type="number"
-          name="speed"
-          placeholder="Seconds per Generation"
-        />
-      </form>
-      <button
-        onClick={() => {
-          setRunning(!running);
-          if (!running) {
-            runningRef.current = true;
-            start();
-          }
-        }}
-      >
-        {running ? "Stop" : "Start"}
-      </button>
+      <GlobalStateProvider>
+        <p>Generation: {generation}</p>
+        <GolForm />
+        <button
+          onClick={() => {
+            setRunning(!running);
+            if (!running) {
+              runningRef.current = true;
+              start();
+            }
+          }}
+        >
+          {running ? "Stop" : "Start"}
+        </button>
 
-      <button
-        onClick={() => {
-          setGrid(blankCanvas());
-          setGen(0);
-        }}
-      >
-        Clear
-      </button>
+        <button
+          onClick={() => {
+            setGrid(blankCanvas());
+            setGen(0);
+          }}
+        >
+          Clear
+        </button>
 
-      <button
-        onClick={() => {
-          setGen(0);
-          setGrid(randomCanvas());
-        }}
-      >
-        Random
-      </button>
+        <button
+          onClick={() => {
+            setGen(0);
+            setGrid(randomCanvas());
+          }}
+        >
+          Random
+        </button>
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: `repeat(${numCols}, 20px)`,
-        }}
-      >
-        {grid.map((rows, i) =>
-          rows.map((col, k) => (
-            <canvas
-              key={`${i}-${k}`}
-              onClick={() => {
-                const newGrid = produce(grid, (gridCopy) => {
-                  gridCopy[i][k] = grid[i][k] ? 0 : 1;
-                });
-                setGrid(newGrid);
-              }}
-              style={{
-                width: 20,
-                height: 20,
-                backgroundColor: grid[i][k] ? "green" : undefined,
-                border: "solid 1px black",
-              }}
-            />
-          ))
-        )}
-      </div>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: `repeat(${numCols}, 20px)`,
+          }}
+        >
+          {grid.map((rows, i) =>
+            rows.map((col, k) => (
+              <canvas
+                key={`${i}-${k}`}
+                onClick={() => {
+                  const newGrid = produce(grid, (gridCopy) => {
+                    gridCopy[i][k] = grid[i][k] ? 0 : 1;
+                  });
+                  setGrid(newGrid);
+                }}
+                style={{
+                  width: 20,
+                  height: 20,
+                  backgroundColor: grid[i][k] ? "green" : undefined,
+                  border: "solid 1px black",
+                }}
+              />
+            ))
+          )}
+        </div>
+      </GlobalStateProvider>
     </>
   );
 };
