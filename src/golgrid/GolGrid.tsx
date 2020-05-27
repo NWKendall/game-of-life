@@ -70,7 +70,7 @@ const App: React.FC = () => {
       });
     });
     setTimeout(start, 1000);
-  }, []);
+  }, [context, generation, operations]);
 
   return (
     <>
