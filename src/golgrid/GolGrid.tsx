@@ -1,36 +1,37 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback, useContext } from "react";
 import produce from "immer";
+import { GlobalState } from "../context/GlobalState";
 
-const numRows = 25;
-const numCols = 25;
-const operations = [
-  [0, 1],
-  [0, -1],
-  [1, -1],
-  [-1, 1],
-  [1, 1],
-  [-1, -1],
-  [-1, 0],
-  [1, 0],
-];
-
-const blankCanvas = () => {
-  const rows = [];
-  for (let i = 0; i < numRows; i++) {
-    rows.push(Array.from(Array(numCols), () => 0));
-  }
-  return rows;
-};
-
-const randomCanvas = () => {
-  const rows = [];
-  for (let i = 0; i < numRows; i++) {
-    rows.push(Array.from(Array(numCols), () => (Math.random() > 0.7 ? 1 : 0)));
-  }
-  return rows;
-};
 
 const App: React.FC = () => {
+  const context = useContext(GlobalState);
+  const operations = [
+    [0, 1],
+    [0, -1],
+    [1, -1],
+    [-1, 1],
+    [1, 1],
+    [-1, -1],
+    [-1, 0],
+    [1, 0],
+  ];
+  
+  const blankCanvas = () => {
+    const rows = [];
+    for (let i = 0; i < context.gameSettings.rows; i++) {
+      rows.push(Array.from(Array(context.gameSettings.columns), () => 0));
+    }
+    return rows;
+  };
+  
+  const randomCanvas = () => {
+    const rows = [];
+    for (let i = 0; i < context.gameSettings.rows; i++) {
+      rows.push(Array.from(Array(context.gameSettings.columns), () => (Math.random() > 0.7 ? 1 : 0)));
+    }
+    return rows;
+  };
+
   const [grid, setGrid] = useState(() => {
     return blankCanvas();
   });
@@ -48,13 +49,13 @@ const App: React.FC = () => {
     setGen(generation++);
     setGrid((g) => {
       return produce(g, (gridCopy) => {
-        for (let i = 0; i < numRows; i++) {
-          for (let j = 0; j < numCols; j++) {
+        for (let i = 0; i < context.gameSettings.rows; i++) {
+          for (let j = 0; j < context.gameSettings.columns; j++) {
             let neighbours = 0;
             operations.forEach(([x, y]) => {
               const newI = i + x;
               const newJ = j + y;
-              if (newI >= 0 && newI < numRows && newJ >= 0 && newJ < numCols) {
+              if (newI >= 0 && newI < context.gameSettings.rows && newJ >= 0 && newJ < context.gameSettings.columns) {
                 neighbours += g[newI][newJ];
               }
             });
@@ -107,7 +108,7 @@ const App: React.FC = () => {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: `repeat(${numCols}, 20px)`,
+          gridTemplateColumns: `repeat(${context.gameSettings.columns}, 20px)`,
         }}
       >
         {grid.map((rows, i) =>

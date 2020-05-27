@@ -3,9 +3,11 @@ import AppReducer from './AppReducer';
 
 // initial state for gol grid
 const initialState = {
-  rows: 25,
-  columns: 25,
-  speed: 1,
+  gameSettings: {
+    rows: 25,
+    columns: 25,
+    speed: 1,
+  }
 }
 
 // create context
@@ -15,7 +17,7 @@ export const GlobalState = createContext(initialState);
 export const GlobalStateProvider = (props: any) => {
   const [state, dispatch] = useReducer(AppReducer, initialState)
   return (
-    <GlobalState.Provider value={{...state}}>
+    <GlobalState.Provider value={{...state, ...dispatch}}>
       {props.children}
     </GlobalState.Provider>
   );

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { GlobalStateProvider } from "./stores/GlobalState"
+import { GlobalStateProvider } from "./context/GlobalState"
 import GolGrid from "./golgrid/GolGrid";
 import GolForm from "./golform/GolForm";
 
