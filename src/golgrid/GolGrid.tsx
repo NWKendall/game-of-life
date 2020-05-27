@@ -18,16 +18,16 @@ const App: React.FC = () => {
   
   const blankCanvas = () => {
     const rows = [];
-    for (let i = 0; i < context.gameSettings.rows; i++) {
-      rows.push(Array.from(Array(context.gameSettings.columns), () => 0));
+    for (let i = 0; i < context.rows; i++) {
+      rows.push(Array.from(Array(context.columns), () => 0));
     }
     return rows;
   };
   
   const randomCanvas = () => {
     const rows = [];
-    for (let i = 0; i < context.gameSettings.rows; i++) {
-      rows.push(Array.from(Array(context.gameSettings.columns), () => (Math.random() > 0.7 ? 1 : 0)));
+    for (let i = 0; i < context.rows; i++) {
+      rows.push(Array.from(Array(context.columns), () => (Math.random() > 0.7 ? 1 : 0)));
     }
     return rows;
   };
@@ -49,13 +49,13 @@ const App: React.FC = () => {
     setGen(generation++);
     setGrid((g) => {
       return produce(g, (gridCopy) => {
-        for (let i = 0; i < context.gameSettings.rows; i++) {
-          for (let j = 0; j < context.gameSettings.columns; j++) {
+        for (let i = 0; i < context.rows; i++) {
+          for (let j = 0; j < context.columns; j++) {
             let neighbours = 0;
             operations.forEach(([x, y]) => {
               const newI = i + x;
               const newJ = j + y;
-              if (newI >= 0 && newI < context.gameSettings.rows && newJ >= 0 && newJ < context.gameSettings.columns) {
+              if (newI >= 0 && newI < context.rows && newJ >= 0 && newJ < context.columns) {
                 neighbours += g[newI][newJ];
               }
             });
@@ -108,7 +108,7 @@ const App: React.FC = () => {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: `repeat(${context.gameSettings.columns}, 20px)`,
+          gridTemplateColumns: `repeat(${context.columns}, 20px)`,
         }}
       >
         {grid.map((rows, i) =>

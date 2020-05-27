@@ -1,6 +1,8 @@
 export default (state: any, action: any) => {
-    switch(action.type) {
-        default:
-            return state;
-    }
-}
+  switch (action.type) {
+    case "NEW_SETTINGS":
+      return { ...state, ...action.payload };
+    default:
+      return state;
+  }
+};

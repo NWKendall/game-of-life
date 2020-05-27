@@ -1,9 +1,12 @@
 import React, { useState, useContext } from "react";
 import { GlobalState } from '../context/GlobalState';
 
+type FormElem = React.FormEvent<HTMLFormElement>
+
 const GolForm: React.FC = () => {
   const [inputs, setInputs] = useState();
   const context = useContext(GlobalState)
+  
   const handleInputChange = (e: any) => {
     e.persist();
     setInputs((inputs: any) => ({
@@ -11,23 +14,21 @@ const GolForm: React.FC = () => {
       [e.target.name]: e.target.value,
     }));
   };
-  const handleSubmit = (e: any) => {
-    if (e) {
+  console.log(context)
+  const handleSubmit = (e: FormElem): void => {
       e.preventDefault();
     }
-  };
-  console.log(`context`, context)
   return (
     <>
-    {/* <p>{context.default.rows}</p> */}
-      <form onSubmit={handleSubmit}>
+    <p>{context.rows}</p>
+      <form >
         <label>Rows:</label>
         <input
           type="number"
           name="rows"
           placeholder="Min = 25, Max = 100"
           onChange={handleInputChange}
-          // value={inputs.rows}
+          value={inputs}
         />
         <label>Columns:</label>
         <input
@@ -35,7 +36,7 @@ const GolForm: React.FC = () => {
           name="columns"
           placeholder="Min = 25, Max = 100"
           onChange={handleInputChange}
-          // value={inputs.columns}
+          value={inputs}
         />
         <label>Speed:</label>
         <input
@@ -43,7 +44,7 @@ const GolForm: React.FC = () => {
           name="speed"
           placeholder="Seconds per Generation"
           onChange={handleInputChange}
-          // value={inputs.speed}
+          value={inputs}
         />
       </form>
     </>
