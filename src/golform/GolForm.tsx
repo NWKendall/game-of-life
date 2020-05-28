@@ -1,5 +1,7 @@
 import React, { useState, useContext } from "react";
 import { GlobalState } from "../context/GlobalState";
+import { TextField, Button, ButtonGroup } from "@material-ui/core";
+import { useStyles } from './golform.styles';
 
 const GolForm: React.FC = () => {
   const [inputs, setInputs] = useState({
@@ -8,6 +10,7 @@ const GolForm: React.FC = () => {
     speed: "",
   });
   const context = useContext(GlobalState);
+  const classes = useStyles({});
 
   const handleInputChange = (e: any) => {
     e.persist();
@@ -16,7 +19,6 @@ const GolForm: React.FC = () => {
       [e.target.name]: e.target.value,
     });
   };
-
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -32,36 +34,40 @@ const GolForm: React.FC = () => {
   };
 
   return (
-    <>
-      {/* <p>CONTEXT: {context.rows}</p> */}
-      <form onSubmit={handleSubmit}>
-        <label>Rows:</label>
-        <input
+    <form onSubmit={handleSubmit} autoComplete="off">
+      <div className={classes.formDiv}>
+        <TextField
+          id="outlined-basic"
+          label="Rows"
           type="number"
           name="rows"
           placeholder="Min = 25, Max = 100"
-          onChange={e => handleInputChange(e)}
+          onChange={(e: any) => handleInputChange(e)}
           value={inputs.rows}
         />
-        <label>Columns:</label>
-        <input
+        <TextField
+          id="outlined-basic"
+          label="Columns"
           type="number"
           name="columns"
           placeholder="Min = 25, Max = 100"
-          onChange={e => handleInputChange(e)}
+          onChange={(e: any) => handleInputChange(e)}
           value={inputs.columns}
         />
-        <label>Speed:</label>
-        <input
+        <TextField
+          id="outlined-basic"
+          label="Speed"
           type="number"
           name="speed"
           placeholder="Seconds per Generation"
-          onChange={e => handleInputChange(e)}
+          onChange={(e: any) => handleInputChange(e)}
           value={inputs.speed}
         />
-        <button type="submit" onClick={handleSubmit}>Submit</button>
+        <Button type="submit" onClick={handleSubmit}>
+          Submit
+        </Button>
+    </div>
       </form>
-    </>
   );
 };
 

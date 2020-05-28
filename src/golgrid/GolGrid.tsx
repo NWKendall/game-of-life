@@ -1,11 +1,14 @@
 import React, { useState, useRef, useCallback, useContext } from "react";
 import produce from "immer";
-import { ButtonGroup, Button, Container, Grid } from '@material-ui/core';
+import { ButtonGroup, Button, Container, Typography } from '@material-ui/core';
 import { GlobalState } from "../context/GlobalState";
 import { useStyles } from './golgrid.styles';
 
 const App: React.FC = () => {
   const context = useContext(GlobalState);
+  let numRows = context.rows;
+  let numCols = context.columns;
+  let gameSpeed = (val: number) => val * 100
   const classes = useStyles({});
   const operations = [
     [0, 1],
@@ -20,16 +23,16 @@ const App: React.FC = () => {
   
   const blankCanvas = () => {
     const rows = [];
-    for (let i = 0; i < context.rows; i++) {
-      rows.push(Array.from(Array(context.columns), () => 0));
+    for (let i = 0; i < numRows; i++) {
+      rows.push(Array.from(Array(numCols), () => 0));
     }
     return rows;
   };
   
   const randomCanvas = () => {
     const rows = [];
-    for (let i = 0; i < context.rows; i++) {
-      rows.push(Array.from(Array(context.columns), () => (Math.random() > 0.7 ? 1 : 0)));
+    for (let i = 0; i < numRows; i++) {
+      rows.push(Array.from(Array(numCols), () => (Math.random() > 0.7 ? 1 : 0)));
     }
     return rows;
   };
@@ -51,13 +54,13 @@ const App: React.FC = () => {
     setGen(generation++);
     setGrid((g) => {
       return produce(g, (gridCopy) => {
-        for (let i = 0; i < context.rows; i++) {
-          for (let j = 0; j < context.columns; j++) {
+        for (let i = 0; i < numRows; i++) {
+          for (let j = 0; j < numCols; j++) {
             let neighbours = 0;
             operations.forEach(([x, y]) => {
               const newI = i + x;
               const newJ = j + y;
-              if (newI >= 0 && newI < context.rows && newJ >= 0 && newJ < context.columns) {
+              if (newI >= 0 && newI < numRows && newJ >= 0 && newJ < numCols) {
                 neighbours += g[newI][newJ];
               }
             });
@@ -71,7 +74,7 @@ const App: React.FC = () => {
         }
       });
     });
-    setTimeout(start, 1000);
+    setTimeout(start, gameSpeed(context.speed));
   }, [context, generation, operations]);
 
   return (
@@ -110,13 +113,15 @@ const App: React.FC = () => {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: `repeat(${context.columns}, 20px)`,
+          gridTemplateColumns: `repeat(${numCols}, 20px)`,
+          justifyContent: "center",
         }}
       >
         {grid.map((rows, i) =>
           rows.map((col, k) => (
             <canvas
             key={`${i}-${k}`}
+            className={classes.canvasStyle}
             onClick={() => {
               const newGrid = produce(grid, (gridCopy) => {
                 gridCopy[i][k] = grid[i][k] ? 0 : 1;
@@ -133,7 +138,9 @@ const App: React.FC = () => {
           ))
         )}
       </div>
-      <h3 className={classes.generationDisplay}>Generation: {generation}</h3>
+      <div className={classes.btngroupStyle}>
+        <Typography variant="h3" className={classes.generationDisplay}>Generation: {generation}</Typography>
+      </div>
     </Container>
   );
 };
