@@ -3,34 +3,30 @@ import { GlobalState } from "../context/GlobalState";
 
 const GolForm: React.FC = () => {
   const [inputs, setInputs] = useState({
-    rows: NaN,
-    columns: NaN,
-    speed: NaN,
+    rows: "",
+    columns: "",
+    speed: "",
   });
   const context = useContext(GlobalState);
-  // Something possibly wrong here?
+
   const handleInputChange = (e: any) => {
     e.persist();
-    console.log(`asdasd`)
     setInputs({
       ...inputs,
       [e.target.name]: e.target.value,
     });
   };
 
-  console.log("Context: ", context);
-
-  console.log("Inputs: ", inputs);
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
     context.dispatch({
-      // THIS KINDA WORKS
+      // Ensures state receives a number type to render grid correctly
       type: "NEW_SETTINGS",
       payload: {
-        rows: inputs.rows,
-        columns: inputs.columns,
-        speed: inputs.speed,
+        rows: Number(inputs.rows),
+        columns: Number(inputs.columns),
+        speed: Number(inputs.speed),
       },
     });
   };

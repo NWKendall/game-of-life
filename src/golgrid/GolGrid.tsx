@@ -1,10 +1,12 @@
 import React, { useState, useRef, useCallback, useContext } from "react";
 import produce from "immer";
+import { ButtonGroup, Button, Container, Grid } from '@material-ui/core';
 import { GlobalState } from "../context/GlobalState";
-
+import { useStyles } from './golgrid.styles';
 
 const App: React.FC = () => {
   const context = useContext(GlobalState);
+  const classes = useStyles({});
   const operations = [
     [0, 1],
     [0, -1],
@@ -73,38 +75,38 @@ const App: React.FC = () => {
   }, [context, generation, operations]);
 
   return (
-    <>
-      <p>Generation: {generation}</p>
-      <button
-        onClick={() => {
-          setRunning(!running);
-          if (!running) {
-            runningRef.current = true;
-            start();
-          }
-        }}
-      >
-        {running ? "Stop" : "Start"}
-      </button>
+    <Container>
+      <ButtonGroup className={classes.btngroupStyle} size="large">
+        <Button
+          onClick={() => {
+            setRunning(!running);
+            if (!running) {
+              runningRef.current = true;
+              start();
+            }
+          }}
+        >
+          {running ? "Stop" : "Start"}
+        </Button>
 
-      <button
-        onClick={() => {
-          setGrid(blankCanvas());
-          setGen(0);
-        }}
-      >
-        Clear
-      </button>
+        <Button
+          onClick={() => {
+            setGrid(blankCanvas());
+            setGen(0);
+          }}
+        >
+          Clear
+        </Button>
 
-      <button
-        onClick={() => {
-          setGen(0);
-          setGrid(randomCanvas());
-        }}
-      >
-        Random
-      </button>
-
+        <Button
+          onClick={() => {
+            setGen(0);
+            setGrid(randomCanvas());
+          }}
+        >
+          Random
+        </Button>
+      </ButtonGroup>
       <div
         style={{
           display: "grid",
@@ -114,24 +116,25 @@ const App: React.FC = () => {
         {grid.map((rows, i) =>
           rows.map((col, k) => (
             <canvas
-              key={`${i}-${k}`}
-              onClick={() => {
-                const newGrid = produce(grid, (gridCopy) => {
-                  gridCopy[i][k] = grid[i][k] ? 0 : 1;
-                });
-                setGrid(newGrid);
-              }}
-              style={{
-                width: 20,
-                height: 20,
-                backgroundColor: grid[i][k] ? "green" : undefined,
-                border: "solid 1px black",
-              }}
+            key={`${i}-${k}`}
+            onClick={() => {
+              const newGrid = produce(grid, (gridCopy) => {
+                gridCopy[i][k] = grid[i][k] ? 0 : 1;
+              });
+              setGrid(newGrid);
+            }}
+            style={{
+              width: 20,
+              height: 20,
+              backgroundColor: grid[i][k] ? "green" : undefined,
+              border: "solid 1px black",
+            }}
             />
           ))
         )}
       </div>
-    </>
+      <h3 className={classes.generationDisplay}>Generation: {generation}</h3>
+    </Container>
   );
 };
 
