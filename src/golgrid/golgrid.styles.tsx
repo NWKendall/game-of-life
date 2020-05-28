@@ -3,7 +3,7 @@ import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 export const useStyles: any = makeStyles((theme: Theme) => 
 createStyles({
     generationDisplay: {
-      color: "red",
+      color: "black",
     },
     btngroupStyle: {
       display: "flex",

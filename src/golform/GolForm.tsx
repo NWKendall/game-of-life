@@ -63,7 +63,7 @@ const GolForm: React.FC = () => {
           onChange={(e: any) => handleInputChange(e)}
           value={inputs.speed}
         />
-        <Button type="submit" onClick={handleSubmit}>
+        <Button variant="outlined" type="submit" onClick={handleSubmit}>
           Submit
         </Button>
     </div>

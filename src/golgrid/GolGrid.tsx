@@ -75,7 +75,7 @@ const App: React.FC = () => {
       });
     });
     setTimeout(start, gameSpeed(context.speed));
-  }, [context, generation, operations]);
+  }, [context, generation, operations, numCols, numRows]);
 
   return (
     <Container>
@@ -131,7 +131,7 @@ const App: React.FC = () => {
             style={{
               width: 20,
               height: 20,
-              backgroundColor: grid[i][k] ? "green" : undefined,
+              backgroundColor: grid[i][k] ? "pink" : undefined,
               border: "solid 1px black",
             }}
             />
