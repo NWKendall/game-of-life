@@ -1,3 +1,13 @@
+## Features * fixes:
+1. Correct resize bug
+2. clear crash bug ✅
+2. color pallette
+3. grid size limitation in functions
+4. skip generations
+5. hash table
+6. different languages (python)
+
+
 ## Turing Completeness
 
 Requirements:

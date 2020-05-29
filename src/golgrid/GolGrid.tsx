@@ -58,7 +58,6 @@ const App: React.FC = () => {
     if (!runningRef.current) {
       return;
     }
-    setGen(generation++);
     // g = current value of grid
     setGrid((g) => {
       // can mutate gridCopy
@@ -78,7 +77,7 @@ const App: React.FC = () => {
             // kill condition
             if (neighbours < 2 || neighbours > 3) {
               gridCopy[i][j] = 0;
-            // survive condition
+              // survive condition
             } else if (g[i][j] === 0 && neighbours === 3) {
               gridCopy[i][j] = 1;
             }
@@ -87,6 +86,7 @@ const App: React.FC = () => {
       });
     });
     setTimeout(start, gameSpeed(context.speed));
+    setGen(generation++);
   }, [context, generation, operations, numCols, numRows]);
 
   return (
@@ -95,9 +95,11 @@ const App: React.FC = () => {
         <Button
           onClick={() => {
             setRunning(!running);
-            if (!running) {
+            if (!running) {             
               runningRef.current = true;
               start();
+              setGen(generation++);
+
             }
           }}
         >
@@ -106,8 +108,9 @@ const App: React.FC = () => {
 
         <Button
           onClick={() => {
-            setGrid(blankCanvas());
+            setRunning(false);
             setGen(0);
+            setGrid(blankCanvas());
           }}
         >
           Clear
@@ -115,6 +118,7 @@ const App: React.FC = () => {
 
         <Button
           onClick={() => {
+            setRunning(false);
             setGen(0);
             setGrid(randomCanvas());
           }}

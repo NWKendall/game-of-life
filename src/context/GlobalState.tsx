@@ -10,7 +10,7 @@ interface IGame {
 const gameSettings:IGame = {
   rows: 25,
   columns: 25,
-  speed: 1,
+  speed: 10,
 };
 
 // create context
