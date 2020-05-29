@@ -22,7 +22,7 @@ const GolHeader: React.FC = () => {
           target="__blank"
           href="https://en.wikipedia.org/wiki/Cellular_automaton"
         >
-          Cellular Automaton
+          Cellular Automata
         </Link>
       </div>
     </>
