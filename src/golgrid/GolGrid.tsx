@@ -20,7 +20,7 @@ const App: React.FC = () => {
     [-1, 0],
     [1, 0],
   ];
-  
+  // generates empty grid
   const blankCanvas = () => {
     const rows = [];
     for (let i = 0; i < numRows; i++) {
@@ -28,7 +28,7 @@ const App: React.FC = () => {
     }
     return rows;
   };
-  
+  // generates randomly populated grid
   const randomCanvas = () => {
     const rows = [];
     for (let i = 0; i < numRows; i++) {
@@ -36,23 +36,32 @@ const App: React.FC = () => {
     }
     return rows;
   };
-
+  //game grid
   const [grid, setGrid] = useState(() => {
     return blankCanvas();
   });
 
+  // for generation counter display
   let [generation, setGen] = useState(0);
+
+  // for game loop
   const [running, setRunning] = useState(false);
 
+  // so value running is accessible within callback
   const runningRef = useRef(running);
   runningRef.current = running;
 
+  // game function
+  // use callback repeats function execution with new values (doesn't create new instance of function)
   const start = useCallback(() => {
+    // quit game
     if (!runningRef.current) {
       return;
     }
     setGen(generation++);
+    // g = current value of grid
     setGrid((g) => {
+      // can mutate gridCopy
       return produce(g, (gridCopy) => {
         for (let i = 0; i < numRows; i++) {
           for (let j = 0; j < numCols; j++) {
@@ -60,13 +69,16 @@ const App: React.FC = () => {
             operations.forEach(([x, y]) => {
               const newI = i + x;
               const newJ = j + y;
+              // controls for boundaries
               if (newI >= 0 && newI < numRows && newJ >= 0 && newJ < numCols) {
+                // adds one to neighbours per operation
                 neighbours += g[newI][newJ];
               }
             });
-
+            // kill condition
             if (neighbours < 2 || neighbours > 3) {
               gridCopy[i][j] = 0;
+            // survive condition
             } else if (g[i][j] === 0 && neighbours === 3) {
               gridCopy[i][j] = 1;
             }
@@ -123,7 +135,9 @@ const App: React.FC = () => {
             key={`${i}-${k}`}
             className={classes.canvasStyle}
             onClick={() => {
+              // passing current grid value, cloning it
               const newGrid = produce(grid, (gridCopy) => {
+                // toggle state per cell
                 gridCopy[i][k] = grid[i][k] ? 0 : 1;
               });
               setGrid(newGrid);
