@@ -1,16 +1,16 @@
 import React, { useState, useContext } from "react";
 import { GlobalState } from "../context/GlobalState";
-import { TextField, Button, ButtonGroup } from "@material-ui/core";
+import { TextField, Button } from "@material-ui/core";
 import { useStyles } from './golform.styles';
 
 const GolForm: React.FC = () => {
+  const context = useContext(GlobalState);
+  const classes = useStyles({});
   const [inputs, setInputs] = useState({
     rows: "",
     columns: "",
     speed: "",
   });
-  const context = useContext(GlobalState);
-  const classes = useStyles({});
 
   const handleInputChange = (e: any) => {
     e.persist();
@@ -41,7 +41,7 @@ const GolForm: React.FC = () => {
           label="Rows"
           type="number"
           name="rows"
-          placeholder="Min = 25, Max = 100"
+          placeholder= " < 100 "
           onChange={(e: any) => handleInputChange(e)}
           value={inputs.rows}
         />
@@ -50,7 +50,7 @@ const GolForm: React.FC = () => {
           label="Columns"
           type="number"
           name="columns"
-          placeholder="Min = 25, Max = 100"
+          placeholder=" < 100 "
           onChange={(e: any) => handleInputChange(e)}
           value={inputs.columns}
         />
@@ -59,7 +59,7 @@ const GolForm: React.FC = () => {
           label="Speed"
           type="number"
           name="speed"
-          placeholder="Seconds per Generation"
+          placeholder=" x 100ms "
           onChange={(e: any) => handleInputChange(e)}
           value={inputs.speed}
         />

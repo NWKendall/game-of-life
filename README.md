@@ -1,11 +1,14 @@
 ## Features * fixes:
 1. Correct resize bug
 2. clear crash bug ✅
-2. color pallette
-3. grid size limitation in functions
-4. skip generations
-5. hash table
-6. different languages (python)
+3. wrap / nowrap function
+4. Testing
+5. color pallette
+6. grid size limitation in functions
+7. skip generations
+8. hashlife
+9. different languages (python)
+10. aging property linkeing to colors
 
 
 ## Turing Completeness

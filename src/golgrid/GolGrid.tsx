@@ -6,10 +6,12 @@ import { useStyles } from './golgrid.styles';
 
 const App: React.FC = () => {
   const context = useContext(GlobalState);
+  const classes = useStyles({});
+  
+  // game settings
   let numRows = context.rows;
   let numCols = context.columns;
   let gameSpeed = (val: number) => val * 100
-  const classes = useStyles({});
   const operations = [
     [0, 1],
     [0, -1],
@@ -20,6 +22,7 @@ const App: React.FC = () => {
     [-1, 0],
     [1, 0],
   ];
+  
   // generates empty grid
   const blankCanvas = () => {
     const rows = [];
@@ -28,6 +31,8 @@ const App: React.FC = () => {
     }
     return rows;
   };
+
+
   // generates randomly populated grid
   const randomCanvas = () => {
     const rows = [];
@@ -36,7 +41,7 @@ const App: React.FC = () => {
     }
     return rows;
   };
-  //game grid
+  // game grid
   const [grid, setGrid] = useState(() => {
     return blankCanvas();
   });
@@ -133,8 +138,8 @@ const App: React.FC = () => {
           justifyContent: "center",
         }}
       >
-        {grid.map((rows, i) =>
-          rows.map((col, k) => (
+        {grid.map((rows: any, i: number) =>
+          rows.map((col: any, k: number) => (
             <canvas
             key={`${i}-${k}`}
             className={classes.canvasStyle}
